@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+
+FILE='dane.dat'
+FILE_PNGOUT='/tmp/diagramy_sygnalu.png'
+
+
+TIME=0
+DATA="`sed 's/X/ /; s/;/ /g' ${FILE} |\
+    while read LINE; do
+	if [ -z "${LINE}" ]; then
+	    continue
+	fi
+	echo \"$LINE\" >> nowy.dat
+
+    done`"

@@ -49,6 +49,27 @@ void print_max(double sig[])//zapisuje do pliku.dat maksima korelacji dla każde
   }
 }
 
+void pobierz_wartosci(double mic1[], double mic2[], double mic3[], double mic4[])
+{
+  FILE *plik;
+    int i=0;
+    int mikrofon1, mikrofon2, mikrofon3, mikrofon4;
+     plik = fopen("nowy.dat","r");
+
+
+     while(feof(plik) == 0)
+     {
+        fscanf(plik,"%d%d%d%d",&mikrofon1,&mikrofon2,&mikrofon3,&mikrofon4);
+      //  printf("%d => %d\n",i,liczba);
+        mic1[i]=mikrofon1;
+        mic2[i]=mikrofon2;
+        mic3[i]=mikrofon3;
+        mic4[i]=mikrofon4;
+        i++;
+     }
+     fclose(plik);
+
+}
 void Symuluj(double mic[], int delay, int szum_delay) //funkcja tworząca sygnał do symulacji
 {
     for(int i=0;i<delay;i++)
@@ -179,10 +200,12 @@ double Beamforming(int argument_programu)
 
 int main(int argc,char* argv[])
 {
-  Symuluj(mikrofon1,0,0);
+
+  pobierz_wartosci(mikrofon1,mikrofon2,mikrofon3,mikrofon4);
+/*  Symuluj(mikrofon1,0,0);
   Symuluj(mikrofon2,20,-40);
   Symuluj(mikrofon3,40,-80);
-  Symuluj(mikrofon4,60,-120);
+  Symuluj(mikrofon4,60,-120);*/
   Count_Delay();
 
     if(argc>1)

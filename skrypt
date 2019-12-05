@@ -1,0 +1,52 @@
+#!/bin/bash
+
+
+
+FILE='dane.dat'
+FILE_PNGOUT='/tmp/diagramy_sygnalu.png'
+
+
+TIME=0
+DATA="`sed 's/X/ /; s/;/ /g' ${FILE} |\
+    while read LINE; do
+	if [ -z "${LINE}" ]; then
+	    continue
+	fi
+	echo \"$TIME $LINE\"
+	let ++TIME
+    done`"
+
+
+gnuplot <<EOF
+set output "${FILE_PNGOUT}"
+set term png crop medium
+
+
+set multiplot layout 4, 1 title "Diagramy sygnalu" font ",14"
+
+set title "Kanal 1"
+plot '-' using 1:2 notitle with l
+${DATA}
+e
+
+set title "Kanal 2"
+plot '-' using 1:3 notitle with l
+${DATA}
+e
+
+set title "Kanal 3"
+plot '-' using 1:4 notitle with l
+${DATA}
+e
+
+set title "Kanal 4"
+plot '-' using 1:5 notitle with l
+${DATA}
+e
+
+unset multiplot
+#
+EOF
+if [ $? -ne 0 ]; then exit 1; fi
+
+display "${FILE_PNGOUT}"&
